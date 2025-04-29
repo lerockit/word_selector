@@ -15,18 +15,18 @@ export class FileWordExportAdapter implements WordExporter {
         })
 
         const wordsToJsString = `
-        [
+        {
             ${wordsExport.reduce<string>(this.formatWordsInJsString, '')}
-        ]
+        }
         `
         
         this.writeFile(wordsToJsString, this.getFileName(wordsExport))
     }
 
     private formatWordsInJsString(previousValues: string, currentWordExport: WordExport): string {
-        if(!previousValues) return `${currentWordExport.value},`
+        if(!previousValues) return `${currentWordExport.getFormattedValue()},`
         return `${previousValues}
-            ${currentWordExport.value},`
+            ${currentWordExport.getFormattedValue()},`
     }
 
     private getFileName(wordsExport: WordExport[]) {

@@ -4,13 +4,15 @@ export class WordExport {
     public readonly value: string
 
     constructor(private readonly text: string, private readonly rawDate: Date) {
-        this.value = this.getFormattedWord()
+        const wordDate = this.rawDate.toISOString().split('T')[0]
+        this.value = JSON.stringify({ [wordDate]: this.text })
     }
 
-    private getFormattedWord(): string {
-        // TODO: Retorna a data em UTC, portanto se for gerar a noite pode ser que comece a partir do dia seguinte
-        const wordDate = this.rawDate.toISOString().split('T')[0]
-        return JSON.stringify({ [wordDate]: this.text })
+    public getFormattedValue(): string {
+        return this.value
+            .replaceAll('{', '')
+            .replaceAll('}', '')
+            .replaceAll('\"', '\'')
     }
 
     public toObject(): Record<string, string> {
